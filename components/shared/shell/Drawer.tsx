@@ -4,7 +4,6 @@ import { XMarkIcon } from '@heroicons/react/24/outline';
 import Brand from './Brand';
 import Navigation from './Navigation';
 import { useTranslation } from 'next-i18next';
-import { useRouter } from 'next/router';
 
 interface DrawerProps {
   sidebarOpen: boolean;
@@ -12,8 +11,6 @@ interface DrawerProps {
 }
 
 const Drawer = ({ sidebarOpen, setSidebarOpen }: DrawerProps) => {
-  const { query } = useRouter();
-  console.log('Drawer: ', query);
   const { t } = useTranslation('common');
 
   return (

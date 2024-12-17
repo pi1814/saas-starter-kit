@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { prisma } from '@/lib/prisma';
 import { JacksonError } from '@/lib/llm/controller/error';
+import { getSession } from '@/lib/session';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { method } = req;
@@ -28,13 +29,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
 // Get Chat Thread by Conversation ID
 const handleGET = async (req: NextApiRequest, res: NextApiResponse) => {
-  // const { tenant } = req.query;
-
-  const userId = req.body.userId;
-
+  const { tenant } = req.query;
+  const session = await getSession(req, res);
   const chat = await getChatThreadByConversationId(
     req.query.conversationId as string,
-    userId
+    tenant as string,
+    session?.user.id as string
   );
 
   if (chat) res.json({ data: chat });
@@ -42,11 +42,12 @@ const handleGET = async (req: NextApiRequest, res: NextApiResponse) => {
 
 const getChatThreadByConversationId = async (
   conversationId: string,
+  tenant: string,
   userId: string
 ) => {
   const conversation = await getConversationById(conversationId);
 
-  if (userId !== conversation.userId) {
+  if (tenant !== conversation.tenant || userId !== conversation.userId) {
     throw new JacksonError('Forbidden', 403);
   }
 

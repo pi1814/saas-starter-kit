@@ -45,10 +45,6 @@ const handleGET = async (req: NextApiRequest, res: NextApiResponse) => {
     const configs = await prisma.lLMConfig.findMany({
       where: {
         tenant: tenant,
-        isChatWithPDFProvider: false,
-      },
-      select: {
-        provider: true,
       },
     });
 
@@ -143,6 +139,7 @@ const createLLMConfig = async (llmConfig) => {
     tenant,
     isChatWithPDFProvider,
   });
+
   return config;
 };
 
@@ -157,6 +154,7 @@ const storeLLMConfig = async (config) => {
       ...config,
     },
   });
+
   return newConfig;
 };
 

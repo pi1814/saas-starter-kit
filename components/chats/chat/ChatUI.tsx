@@ -20,17 +20,18 @@ interface ConversationContextType {
 export const ConversationContext =
   createContext<ConversationContextType | null>(null);
 
-export function ChatUI() {
+export function ChatUI({ slug }) {
   const router = useRouter();
   const conversationId = router.query.conversationId?.[0] as string;
 
   const setConversationId = (newConversationId: string) => {
     const basePath = router.pathname.split('/[[...conversationId]]')[0];
+    const basePathWithOutSlug = basePath.split('/[slug]').join(`/${slug}`);
 
     if (newConversationId === '') {
-      router.push(basePath);
+      router.push(basePathWithOutSlug);
     } else {
-      router.push(`${basePath}/${newConversationId}`);
+      router.push(`${basePathWithOutSlug}/${newConversationId}`);
     }
   };
 

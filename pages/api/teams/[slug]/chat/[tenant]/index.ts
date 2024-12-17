@@ -7,6 +7,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { prisma } from '@/lib/prisma';
 import { LLM_PROVIDERS } from '@/lib/llm/ee/chat/llm-providers';
 import { LLMConfig } from '@prisma/client';
+import { getSession } from '@/lib/session';
 
 /**
  * If no conversationId is provided it will be treated as new conversation and will be created.
@@ -42,6 +43,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
   const { tenant } = req.query;
   const { messages, model, provider, isChatWithPDFProvider } = req.body;
+  const session = await getSession(req, res);
 
   let { conversationId } = req.body;
 
@@ -112,7 +114,7 @@ async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
     if (!conversationId) {
       const conversation = await createConversation({
         tenant: tenant as string,
-        userId: '',
+        userId: session?.user.id as string,
         title: messages[0].content.trim().slice(0, 50),
         provider: isChatWithPDFProvider ? 'openai' : provider,
         model: model?.id || '',
@@ -131,6 +133,7 @@ async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
       role: 'user',
       content: messages[messages.length - 1].content,
     });
+
     const responseMessage = await generateChatResponse(
       messages.map((m) => {
         return {

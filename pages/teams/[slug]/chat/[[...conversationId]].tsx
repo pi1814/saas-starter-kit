@@ -33,7 +33,7 @@ const ChatPage = ({ slug }) => {
         },
       }}
     >
-      <ChatUI />
+      <ChatUI slug={team.slug} />
     </ChatContextProvider>
   );
 };

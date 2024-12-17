@@ -2,7 +2,6 @@ import { Cog6ToothIcon, CodeBracketIcon } from '@heroicons/react/24/outline';
 import { useTranslation } from 'next-i18next';
 import NavigationItems from './NavigationItems';
 import { NavigationProps, MenuItem } from './NavigationItems';
-import { MessageSquareCodeIcon } from 'lucide-react';
 
 interface NavigationItemsProps extends NavigationProps {
   slug: string;
@@ -16,12 +15,6 @@ const TeamNavigation = ({ slug, activePathname }: NavigationItemsProps) => {
       href: `/teams/${slug}/products`,
       icon: CodeBracketIcon,
       active: activePathname === `/teams/${slug}/products`,
-    },
-    {
-      name: t('bui-chat'),
-      href: `/chat`,
-      icon: MessageSquareCodeIcon,
-      active: activePathname === `/chat`,
     },
     {
       name: t('settings'),
