@@ -1,22 +1,19 @@
 import { ChatContextProvider, ChatUI } from '@/components/chats';
+import useTeam from 'hooks/useTeam';
 import { GetServerSidePropsContext } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
-const ChatPage = ({
-  llmTenant,
-}: {
-  llmTenant: string;
-  hasValidLicense: boolean;
-}) => {
+const ChatPage = () => {
+  const { team } = useTeam();
   return (
     <ChatContextProvider
       value={{
         urls: {
-          chat: `/api/chat/${llmTenant}`,
-          llmConfig: `/api/chat/${llmTenant}/config`,
-          llmProviders: `/api/chat/${llmTenant}/providers`,
-          fileUpload: `/api/chat/${llmTenant}/upload-file`,
-          conversation: `/api/chat/${llmTenant}/conversation`,
+          chat: `/api/chat/${team?.id}`,
+          llmConfig: `/api/chat/${team?.id}/config`,
+          llmProviders: `/api/chat/${team?.id}/providers`,
+          fileUpload: `/api/chat/${team?.id}/upload-file`,
+          conversation: `/api/chat/${team?.id}/conversation`,
         },
       }}
     >

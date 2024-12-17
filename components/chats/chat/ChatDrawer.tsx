@@ -1,3 +1,4 @@
+import MobileSidebar from './MobileSidebar';
 import Sidebar from './Sidebar';
 import { LLMConversation } from './types';
 
@@ -11,10 +12,25 @@ type ChatDrawerProps = {
 };
 
 export default function ChatDrawer(props: ChatDrawerProps) {
-  const { setShowSettings, conversations, conversationId, setConversationId } =
-    props;
+  const {
+    isChatDrawerVisible,
+    toggleChatDrawerVisibility,
+    setShowSettings,
+    conversations,
+    conversationId,
+    setConversationId,
+  } = props;
   return (
     <>
+      {isChatDrawerVisible ? (
+        <MobileSidebar
+          toggleChatDrawerVisibility={toggleChatDrawerVisibility}
+          setShowSettings={setShowSettings}
+          conversations={conversations}
+          conversationId={conversationId}
+          setConversationId={setConversationId}
+        />
+      ) : null}
       <div className="dark hidden flex-shrink-0 bg-gray-900 md:flex md:w-[260px] md:flex-col">
         <div className="flex h-full min-h-0 flex-col ">
           <Sidebar

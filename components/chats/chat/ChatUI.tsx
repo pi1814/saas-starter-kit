@@ -7,6 +7,8 @@ import { useFetch } from '../hooks';
 import { ApiSuccess } from '../types';
 import { ChatContext } from '../provider';
 import { LLMConversation } from './types';
+import useTeam from 'hooks/useTeam';
+import { Loading } from '../shared';
 
 interface ConversationContextType {
   selectedConversation?: LLMConversation;
@@ -59,6 +61,12 @@ export function ChatUI() {
   const selectedConversation = conversations?.find(
     (c) => c.id === conversationId
   );
+
+  const { isLoading } = useTeam();
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <ConversationContext.Provider

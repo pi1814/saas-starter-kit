@@ -5,14 +5,9 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { Error, Loading } from '@/components/shared';
 import { useTranslation } from 'next-i18next';
 
-const ChatPage = ({
-  llmTenant,
-}: {
-  llmTenant: string;
-  hasValidLicense: boolean;
-}) => {
+const ChatPage = ({ slug }) => {
   const { t } = useTranslation('common');
-  const { isLoading, isError, team } = useTeam();
+  const { isLoading, isError, team } = useTeam(slug as string);
 
   if (isLoading) {
     return <Loading />;
@@ -25,15 +20,16 @@ const ChatPage = ({
   if (!team) {
     return <Error message={t('team-not-found')} />;
   }
+
   return (
     <ChatContextProvider
       value={{
         urls: {
-          chat: `/api/teams/${team.slug}/chat/${llmTenant}`,
-          llmConfig: `/api/teams/${team.slug}/chat/${llmTenant}/config`,
-          llmProviders: `/api/teams/${team.slug}/chat/${llmTenant}/providers`,
-          fileUpload: `/api/teams/${team.slug}/chat/${llmTenant}/upload-file`,
-          conversation: `/api/teams/${team.slug}/chat/${llmTenant}/conversation`,
+          chat: `/api/teams/${team.slug}/chat/${team.id}`,
+          llmConfig: `/api/teams/${team.slug}/chat/${team.id}/config`,
+          llmProviders: `/api/teams/${team.slug}/chat/${team.id}/providers`,
+          fileUpload: `/api/teams/${team.slug}/chat/${team.id}/upload-file`,
+          conversation: `/api/teams/${team.slug}/chat/${team.id}/conversation`,
         },
       }}
     >
@@ -45,11 +41,12 @@ const ChatPage = ({
 export const getServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
-  const { locale } = context;
+  const { locale, query } = context;
 
   return {
     props: {
       ...(locale ? await serverSideTranslations(locale, ['common']) : {}),
+      slug: query.slug,
     },
   };
 };

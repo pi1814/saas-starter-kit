@@ -330,7 +330,7 @@ export async function ollamaHandler(
   { text: string } | AsyncGenerator<ChatCompletionChunk, void, unknown>
 > {
   const stream = await ollama.chat({
-    model: model.id || 'llama3.2',
+    model: 'llama3.2',
     messages,
     stream: true,
   });

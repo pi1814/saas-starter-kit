@@ -1,56 +1,87 @@
-import { Sparkles, User, MessageCircleMore } from 'lucide-react';
+import React from 'react';
+import { Sparkles, User, Copy } from 'lucide-react';
+import MarkdownRenderer from './MarkdownRenderer';
+import { useTranslation } from 'next-i18next';
 
 const Message = (props: any) => {
+  const { t } = useTranslation('common');
   const { message } = props;
   const { role, content: text } = message;
 
   const isUser = role === 'user';
 
+  const [showActions, setShowActions] = React.useState(false);
+  const [copied, setCopied] = React.useState(false);
+
+  const handleCopyMessage = () => {
+    navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
   return (
     <div
-      className={`group w-full text-gray-800 dark:text-gray-100 border-b border-black/10 dark:border-gray-900/50 ${
+      className={`w-full py-4 px-4 md:px-6 lg:px-8 transition-colors duration-200 ${
         isUser
-          ? 'dark:bg-gray-800 bg-gray-50'
-          : 'bg-secondary-content dark:bg-[#444654]'
-      }
+          ? 'bg-blue-50 dark:bg-blue-900/30'
+          : 'bg-gray-50 dark:bg-gray-800/50'
       }`}
+      onMouseEnter={() => setShowActions(true)}
+      onMouseLeave={() => setShowActions(false)}
     >
-      <div className="text-base gap-4 md:gap-6 md:max-w-2xl lg:max-w-xl xl:max-w-3xl flex lg:px-0 m-auto w-full">
-        <div className="flex flex-row gap-4 md:gap-6 md:max-w-2xl lg:max-w-xl xl:max-w-3xl p-4 md:py-6 lg:px-0 m-auto w-full">
-          <div className="w-8 flex flex-col relative items-end">
-            <div className="relative h-7 w-7 p-1 rounded-sm text-white flex items-center justify-center bg-black/75 text-opacity-100r">
-              {isUser ? (
-                <User className="h-5 w-5 text-white" />
-              ) : (
-                <Sparkles className="h-5 w-5 text-white" />
-              )}
-            </div>
-            <div className="text-xs flex items-center justify-center gap-1 absolute left-0 top-2 -ml-4 -translate-x-full group-hover:visible !invisible">
-              <button
-                disabled
-                className="text-gray-300 dark:text-gray-400"
-              ></button>
-              {/* <span className="flex-grow flex-shrink-0">1 / 1</span> */}
-              <button
-                disabled
-                className="text-gray-300 dark:text-gray-400"
-              ></button>
-            </div>
-          </div>
-          <div className="relative flex w-[calc(100%-50px)] flex-col gap-1 md:gap-3 lg:w-[calc(100%-115px)]">
-            <div className="flex flex-grow flex-col gap-3">
-              <div className="min-h-20 flex flex-col items-start gap-4 whitespace-pre-wrap break-words">
-                <div className="prose w-full break-words dark:prose-invert dark">
-                  {!isUser && text === null ? (
-                    <MessageCircleMore className="h-6 w-6 animate-pulse" />
-                  ) : (
-                    <p>{text}</p>
-                  )}
-                </div>
-              </div>
-            </div>
+      <div className="max-w-4xl mx-auto flex items-start space-x-4">
+        {/* Avatar */}
+        <div className="shrink-0">
+          <div
+            className={`w-9 h-9 rounded-md flex items-center justify-center ${
+              isUser ? 'bg-blue-500 text-white' : 'bg-emerald-500 text-white'
+            }`}
+          >
+            {isUser ? (
+              <User className="w-5 h-5" />
+            ) : (
+              <Sparkles className="w-5 h-5" />
+            )}
           </div>
         </div>
+
+        {/* Message Content */}
+        <div className="flex-grow min-w-0">
+          <div
+            className={`prose dark:prose-invert max-w-full break-words ${
+              text === null ? 'opacity-50' : ''
+            }`}
+          >
+            {!isUser && text === null ? (
+              <div className="flex items-center space-x-2 animate-pulse">
+                <div className="h-2 w-2 bg-gray-300 rounded-full"></div>
+                <div className="h-2 w-2 bg-gray-300 rounded-full"></div>
+                <div className="h-2 w-2 bg-gray-300 rounded-full"></div>
+              </div>
+            ) : (
+              <MarkdownRenderer content={text} />
+            )}
+          </div>
+        </div>
+
+        {/* Message Actions */}
+        {showActions && (
+          <div className="flex flex-col space-y-2 opacity-70 hover:opacity-100 transition-opacity">
+            <button
+              onClick={handleCopyMessage}
+              className="hover:bg-gray-200 p-1 rounded-md transition-colors"
+              title="Copy message"
+            >
+              {copied ? (
+                <span className="text-xs text-green-600">
+                  {t('copied-prompt')}
+                </span>
+              ) : (
+                <Copy className="w-4 h-4 text-gray-500" />
+              )}
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
