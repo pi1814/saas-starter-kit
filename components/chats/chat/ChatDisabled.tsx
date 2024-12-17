@@ -13,7 +13,6 @@ export default function ChatDisabled() {
               {t('bui-chat-disabled-description')}
             </Card.Description>
           </Card.Header>
-          <div>{/* <ContactSupport /> */}</div>
         </Card.Body>
       </Card>
     </div>

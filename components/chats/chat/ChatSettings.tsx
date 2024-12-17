@@ -417,9 +417,7 @@ export default function ChatSettings() {
             </form>
           )}
         </Card.Body>
-        {/* <Card.Footer> */}
         <div className="flex justify-end gap-2"></div>
-        {/* </Card.Footer> */}
       </Card>
       <ConfirmationModal
         visible={confirmationDialogVisible}

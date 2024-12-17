@@ -24,10 +24,7 @@ const DynamicChatInput = ({
   useEffect(() => {
     const textarea = textareaRef.current;
     if (textarea) {
-      // Reset height to auto to correctly calculate scroll height
       textarea.style.height = 'auto';
-
-      // Set height based on scroll height, with min and max limits
       const scrollHeight = textarea.scrollHeight;
       const newHeight = Math.min(Math.max(scrollHeight, 48), 200); // Min 48px, Max 200px
 
@@ -53,14 +50,12 @@ const DynamicChatInput = ({
   return (
     <div className="sticky bottom-1 z-40 mt-auto w-full rounded-xl bg-gray-800 border-t border-gray-200">
       <div className="max-w-4xl mx-auto px-4 py-3">
-        {/* Error Message */}
         {errorMessage && (
           <div className="mb-2 text-center">
             <span className="text-red-500 text-sm">{errorMessage}</span>
           </div>
         )}
 
-        {/* Input Container */}
         <div
           className="flex bg-white items-end rounded-xl border border-gray-300 
           focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-100 
@@ -70,7 +65,6 @@ const DynamicChatInput = ({
             maxHeight: '200px',
           }}
         >
-          {/* PDF File Upload (if applicable) */}
           {isChatWithPDFProvider && (
             <div className="flex items-center pl-2">
               <input
@@ -94,7 +88,6 @@ const DynamicChatInput = ({
             </div>
           )}
 
-          {/* Textarea */}
           <textarea
             ref={textareaRef}
             value={message}
@@ -110,8 +103,12 @@ const DynamicChatInput = ({
             onKeyDown={handleKeyDown}
           />
 
-          {/* Send Button */}
-          <div className="flex items-center p-2">
+          <div
+            className="flex items-center p-2"
+            style={{
+              height: inputHeight,
+            }}
+          >
             <button
               disabled={
                 message.length === 0 ||

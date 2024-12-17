@@ -26,12 +26,12 @@ export function ChatUI({ slug }) {
 
   const setConversationId = (newConversationId: string) => {
     const basePath = router.pathname.split('/[[...conversationId]]')[0];
-    const basePathWithOutSlug = basePath.split('/[slug]').join(`/${slug}`);
+    const conversationRoute = basePath.split('/[slug]').join(`/${slug}`);
 
     if (newConversationId === '') {
-      router.push(basePathWithOutSlug);
+      router.push(conversationRoute);
     } else {
-      router.push(`${basePathWithOutSlug}/${newConversationId}`);
+      router.push(`${conversationRoute}/${newConversationId}`);
     }
   };
 
@@ -78,7 +78,7 @@ export function ChatUI({ slug }) {
         setIsChatWithPDFProvider,
       }}
     >
-      <div className="overflow-hidden w-full h-full relative flex bg-gray-50 border border-gray-200 rounded-lg shadow-md">
+      <div className="w-full h-full relative flex bg-gray-50 border border-gray-200 rounded-lg shadow-md">
         <ChatDrawer
           isChatDrawerVisible={isChatDrawerVisible}
           toggleChatDrawerVisibility={toggleChatDrawerVisibility}
@@ -88,7 +88,7 @@ export function ChatUI({ slug }) {
           setConversationId={setConversationId}
         />
         <div className="flex max-w-full flex-col w-full h-full">
-          <div className="flex-1 max-h-full h-full overflow-auto p-4 bg-white border-t border-gray-300 rounded-b-lg shadow-inner">
+          <div className="flex-1 max-h-full h-full p-4 bg-white border-t border-gray-300 rounded-b-lg shadow-inner">
             {showSettings ? (
               <div className="p-4 border-t border-gray-300 bg-white rounded-b-lg shadow-inner">
                 <ChatSettings />

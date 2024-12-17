@@ -155,7 +155,6 @@ const Chat = ({
     try {
       setRequestInProgress(true);
       e.preventDefault();
-      // const model = getProviderModel();
       const _model = models?.find((m) => m.id === (model || selectedModel));
 
       if (!isChatWithPDFProvider) {
@@ -168,7 +167,6 @@ const Chat = ({
           return;
         }
       }
-      // Don't send empty messages
       if (message.length < 1) {
         setErrorMessage('Please enter a message.');
         return;
@@ -377,7 +375,6 @@ const Chat = ({
               </div>
             </div>
           )}
-          {/* Conversation Header */}
           {selectedProvider && selectedModel && (
             <div className="sticky top-0 z-40 rounded-xl flex w-full items-center justify-center gap-1 border-b border-gray-200 bg-gray-50 p-3 text-gray-700 shadow-sm">
               {t('bui-chat-provider')}: {providerName} | {t('bui-chat-model')}:{' '}
@@ -389,20 +386,11 @@ const Chat = ({
               )}
             </div>
           )}
-          {/* Conversation Area */}
           <ConversationArea
             conversationThread={conversationThread ?? []}
             trailingThread={trailingThread}
             className={undefined}
           />
-          {/* <div className="w-full overflow-y-scroll flex-1 bg-white">
-            <div className="max-w-4xl mx-auto px-4 py-6 space-y-4">
-              {[...(conversationThread ?? []), ...trailingThread]?.map(
-                (message, index) => <Message key={index} message={message} />
-              )}
-              <div ref={bottomOfChatRef}></div>
-            </div>
-          </div> */}
           {showCreateLLMConfigMessage && (
             <div className="py-10 relative w-full flex flex-col h-full">
               <div className="flex items-center justify-center gap-2">

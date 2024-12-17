@@ -24,7 +24,7 @@ const Sidebar = ({
   const setIsChatWithPDFProvider =
     useContext(ConversationContext)?.setIsChatWithPDFProvider;
   return (
-    <div className="scrollbar-trigger flex h-full w-full flex-1 items-start border-white/20 dark:bg-gray-800">
+    <div className="flex h-full w-full flex-1 items-start border-white/20 dark:bg-gray-800">
       <nav className="flex h-full flex-1 flex-col space-y-1 p-2">
         <div
           className="flex py-3 px-3 items-center gap-3 rounded-md hover:bg-gray-500/10 transition-colors duration-200 text-white cursor-pointer text-sm mb-1 flex-shrink-0 border border-white/20"
@@ -40,7 +40,7 @@ const Sidebar = ({
           <Plus className="h-5 w-5" />
           {t('bui-chat-new-chat')}
         </div>
-        <div className="flex-col flex-1 border-b border-white/20 overflow-y-scroll">
+        <div className="flex-col flex-1 border-b border-white/20 ">
           {!conversationId && (
             <ConversationTile
               key="untitled"
@@ -135,7 +135,7 @@ function ConversationTile({
       }}
     >
       <a className="flex py-3 px-3 items-center gap-3 relative rounded-md hover:bg-[#2A2B32] cursor-pointer break-all hover:pr-4 group">
-        <div className="flex-1 text-ellipsis max-h-5 overflow-hidden break-all relative">
+        <div className="flex-1 text-ellipsis max-h-5 break-all relative">
           {title}
         </div>
         {isChatWithPDFProvider && <Badge className="bg-blue-500">PDF</Badge>}

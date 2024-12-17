@@ -30,7 +30,6 @@ const Message = (props: any) => {
       onMouseLeave={() => setShowActions(false)}
     >
       <div className="max-w-4xl mx-auto flex items-start space-x-4">
-        {/* Avatar */}
         <div className="shrink-0">
           <div
             className={`w-9 h-9 rounded-md flex items-center justify-center ${
@@ -45,7 +44,6 @@ const Message = (props: any) => {
           </div>
         </div>
 
-        {/* Message Content */}
         <div className="flex-grow min-w-0">
           <div
             className={`prose dark:prose-invert max-w-full break-words ${
@@ -64,7 +62,6 @@ const Message = (props: any) => {
           </div>
         </div>
 
-        {/* Message Actions */}
         {showActions && (
           <div className="flex flex-col space-y-2 opacity-70 hover:opacity-100 transition-opacity">
             <button
