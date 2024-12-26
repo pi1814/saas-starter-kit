@@ -8,6 +8,8 @@ import { ConversationContext } from './ChatUI';
 import { defaultHeaders } from '../utils';
 import DynamicChatInput from './DynamicChatInput';
 import ConversationArea from './ConversationArea';
+import { Error } from '@/components/shared';
+import { showErrorToast } from '@/components/shared/utils/ErrorToast';
 
 interface ChatProps {
   setShowSettings: (value: boolean) => void;
@@ -184,7 +186,8 @@ const Chat = ({
       setMessage('');
 
       if (!urls?.chat) {
-        throw new Error('Missing API path for LLM chat');
+        showErrorToast('Missing API path for LLM chat');
+        return;
       }
 
       const response = await fetch(urls.chat, {
@@ -276,7 +279,8 @@ const Chat = ({
   const [isUploadingFile, setIsUploadingFile] = useState(false);
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!urls?.fileUpload) {
-      throw new Error('Missing API path for file upload');
+      showErrorToast('Missing API path for file upload');
+      return;
     }
     const files = e.target.files;
     if (files && files.length > 0) {
@@ -386,6 +390,8 @@ const Chat = ({
               )}
             </div>
           )}
+          {errorMessage && <Error message={errorMessage} />}
+
           <ConversationArea
             conversationThread={conversationThread ?? []}
             trailingThread={trailingThread}
@@ -420,7 +426,6 @@ const Chat = ({
         handleFileChange={handleFileChange}
         isChatWithPDFProvider={isChatWithPDFProvider}
         isUploadingFile={isUploadingFile}
-        errorMessage={errorMessage}
         provider={provider}
         selectedProvider={selectedProvider}
         model={model}

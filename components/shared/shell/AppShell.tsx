@@ -23,14 +23,14 @@ export default function AppShell({ children }) {
   }
 
   return (
-    <div className="flex flex-col h-screen">
+    <div>
       <Header setSidebarOpen={setSidebarOpen} />
       <div className="flex flex-1">
         <div className="w-64">
           <Drawer sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
         </div>
 
-        <main className="flex-1 p-3">{children}</main>
+        <main className="flex-1 p-3 max-h-screen min-h-svh">{children}</main>
       </div>
     </div>
   );

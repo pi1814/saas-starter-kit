@@ -3,7 +3,6 @@ import axios from 'axios';
 import * as jose from 'jose';
 import type { JacksonOption, LLMProvider, LLMModel } from '../../typings';
 import { loadJWSPrivateKey } from '../../controller/utils';
-import { throwIfInvalidLicense } from '../common/checkLicense';
 import { LLMChat, LLMConfigPayload, LLMConversation } from './types';
 import { JacksonError } from '../../controller/error';
 import { LLM_PROVIDERS } from './llm-providers';
@@ -56,7 +55,6 @@ export class ChatController {
         },
       }
     );
-
     if (res.data[token]) {
       return JSON.parse(res.data[token]?.data);
     } else {
@@ -65,8 +63,6 @@ export class ChatController {
   }
 
   public async getLLMConfigs(tenant: string) {
-    await throwIfInvalidLicense(this.opts.boxyhqLicenseKey);
-
     const configs = await this.getLLMConfigsByTenant(tenant);
 
     for (let i = 0; i < configs.length; i++) {
@@ -91,8 +87,6 @@ export class ChatController {
     tenant: string,
     provider: LLMProvider
   ) {
-    await throwIfInvalidLicense(this.opts.boxyhqLicenseKey);
-
     return await this.llmConfigStore.findMany({
       where: {
         tenant: tenant,
@@ -143,8 +137,6 @@ export class ChatController {
   }
 
   public async createLLMConfig(llmConfig: LLMConfigPayload) {
-    await throwIfInvalidLicense(this.opts.boxyhqLicenseKey);
-
     const { apiKey, provider, tenant, isChatWithPDFProvider } = llmConfig;
 
     // Validate API Key
@@ -202,8 +194,6 @@ export class ChatController {
     configId: string,
     llmConfig: LLMConfigPayload
   ): Promise<void> {
-    await throwIfInvalidLicense(this.opts.boxyhqLicenseKey);
-
     // Fetch the existing configuration from the database
     const config = await this.llmConfigStore.findUnique({
       where: { id: configId },
@@ -250,8 +240,6 @@ export class ChatController {
     configId: string;
     tenant: string;
   }): Promise<void> {
-    await throwIfInvalidLicense(this.opts.boxyhqLicenseKey);
-
     const config = await this.llmConfigStore.findUnique({
       where: { id: configId },
     });
@@ -281,8 +269,6 @@ export class ChatController {
     tenant: string;
     userId: string;
   }) {
-    await throwIfInvalidLicense(this.opts.boxyhqLicenseKey);
-
     const conversations = await this.conversationStore.findMany({
       where: {
         tenant: tenant,
@@ -294,8 +280,6 @@ export class ChatController {
   }
 
   public async getConversationById(conversationId: string) {
-    await throwIfInvalidLicense(this.opts.boxyhqLicenseKey);
-
     const conversation = await this.conversationStore.findUnique({
       where: {
         id: conversationId,
@@ -312,8 +296,6 @@ export class ChatController {
   public async createConversation(
     conversation: Omit<LLMConversation, 'id' | 'createdAt'>
   ) {
-    await throwIfInvalidLicense(this.opts.boxyhqLicenseKey);
-
     const createdAt = new Date(); // Use Date object for createdAt
 
     const newConversation = await this.conversationStore.create({
@@ -327,8 +309,6 @@ export class ChatController {
   }
 
   public async createChat(chat: Omit<LLMChat, 'id' | 'createdAt'>) {
-    await throwIfInvalidLicense(this.opts.boxyhqLicenseKey);
-
     const createdAt = new Date(); // Use Date object for createdAt
 
     const newChat = await this.chatStore.create({
@@ -343,14 +323,17 @@ export class ChatController {
 
   public async getChatThreadByConversationId(
     conversationId: string,
+    tenant: string,
     userId: string
   ) {
-    await throwIfInvalidLicense(this.opts.boxyhqLicenseKey);
-
     const conversation = await this.getConversationById(conversationId);
 
+    if (tenant !== conversation.tenant) {
+      throw new Error('Forbidden');
+    }
+
     if (userId !== conversation.userId) {
-      throw new Error('Forbidden'); // Adjust error handling as needed
+      throw new Error('Forbidden');
     }
 
     const chatThreads = await this.chatStore.findMany({
@@ -358,7 +341,7 @@ export class ChatController {
         conversationId: conversationId,
       },
       orderBy: {
-        createdAt: 'asc', // Assuming there's a createdAt field for ordering
+        createdAt: 'asc',
       },
     });
 
@@ -366,8 +349,6 @@ export class ChatController {
   }
 
   public async getLLMProviders(tenant: string, filterByTenant?: boolean) {
-    await throwIfInvalidLicense(this.opts.boxyhqLicenseKey);
-
     if (filterByTenant) {
       // Fetch configurations for the given tenant
       const configs = await this.getLLMConfigsByTenant(tenant);
@@ -400,8 +381,6 @@ export class ChatController {
     provider: LLMProvider,
     filterByTenant?: boolean // fetch models by saved configs
   ): Promise<LLMModel[]> {
-    await throwIfInvalidLicense(this.opts.boxyhqLicenseKey);
-
     if (filterByTenant) {
       // Fetch configurations for the given tenant and provider
       const configs = await this.getLLMConfigsByTenantAndProvider(

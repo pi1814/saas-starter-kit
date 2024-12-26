@@ -9,8 +9,6 @@ const Message = (props: any) => {
   const { role, content: text } = message;
 
   const isUser = role === 'user';
-
-  const [showActions, setShowActions] = React.useState(false);
   const [copied, setCopied] = React.useState(false);
 
   const handleCopyMessage = () => {
@@ -26,8 +24,6 @@ const Message = (props: any) => {
           ? 'bg-blue-50 dark:bg-blue-900/30'
           : 'bg-gray-50 dark:bg-gray-800/50'
       }`}
-      onMouseEnter={() => setShowActions(true)}
-      onMouseLeave={() => setShowActions(false)}
     >
       <div className="max-w-4xl mx-auto flex items-start space-x-4">
         <div className="shrink-0">
@@ -62,23 +58,21 @@ const Message = (props: any) => {
           </div>
         </div>
 
-        {showActions && (
-          <div className="flex flex-col space-y-2 opacity-70 hover:opacity-100 transition-opacity">
-            <button
-              onClick={handleCopyMessage}
-              className="hover:bg-gray-200 p-1 rounded-md transition-colors"
-              title="Copy message"
-            >
-              {copied ? (
-                <span className="text-xs text-green-600">
-                  {t('copied-prompt')}
-                </span>
-              ) : (
-                <Copy className="w-4 h-4 text-gray-500" />
-              )}
-            </button>
-          </div>
-        )}
+        <div className="flex flex-col space-y-2 opacity-70 hover:opacity-100 transition-opacity">
+          <button
+            onClick={handleCopyMessage}
+            className="hover:bg-gray-200 p-1 rounded-md transition-colors"
+            title="Copy message"
+          >
+            {copied ? (
+              <span className="text-xs text-green-600">
+                {t('copied-prompt')}
+              </span>
+            ) : (
+              <Copy className="w-4 h-4 text-gray-500" />
+            )}
+          </button>
+        </div>
       </div>
     </div>
   );

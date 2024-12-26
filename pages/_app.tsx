@@ -43,7 +43,16 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
         <link rel="icon" href="https://boxyhq.com/img/favicon.ico" />
       </Head>
       <SessionProvider session={session}>
-        <Toaster toastOptions={{ duration: 4000 }} />
+        <Toaster
+          position="top-center"
+          toastOptions={{
+            duration: 3000,
+            style: {
+              background: '#f44336',
+              color: '#fff',
+            },
+          }}
+        />
         <Themer
           overrideTheme={{
             '--primary-color': colors.blue['500'],
