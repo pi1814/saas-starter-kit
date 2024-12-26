@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { prisma } from '@/lib/prisma';
-import { JacksonError } from '@/lib/llm/controller/error';
 import { getSession } from '@/lib/session';
+import controllers from '@/lib/llm';
+import { jacksonOptions } from '@/lib/llm/env';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { method } = req;
@@ -31,44 +31,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 const handleGET = async (req: NextApiRequest, res: NextApiResponse) => {
   const { tenant } = req.query;
   const session = await getSession(req, res);
-  const chat = await getChatThreadByConversationId(
+  const { chatController } = await controllers(jacksonOptions);
+
+  const chat = await chatController.getChatThreadByConversationId(
     req.query.conversationId as string,
     tenant as string,
     session?.user.id as string
   );
 
   if (chat) res.json({ data: chat });
-};
-
-const getChatThreadByConversationId = async (
-  conversationId: string,
-  tenant: string,
-  userId: string
-) => {
-  const conversation = await getConversationById(conversationId);
-
-  if (tenant !== conversation.tenant || userId !== conversation.userId) {
-    throw new JacksonError('Forbidden', 403);
-  }
-
-  const chats = await prisma.chatStore.findMany({
-    where: { conversationId },
-    orderBy: { createdAt: 'asc' }, // Order by creation date ascending
-  });
-
-  return chats; // Return the list of chats
-};
-
-const getConversationById = async (conversationId: string) => {
-  const conversation = await prisma.lLMConversation.findUnique({
-    where: { id: conversationId },
-  });
-
-  if (!conversation) {
-    throw new JacksonError('Conversation not found', 404);
-  }
-
-  return conversation;
 };
 
 export default handler;

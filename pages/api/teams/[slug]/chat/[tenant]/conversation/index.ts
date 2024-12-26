@@ -1,5 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { prisma } from '@/lib/prisma';
+import controllers from '@/lib/llm';
+import { jacksonOptions } from '@/lib/llm/env';
+import { getSession } from '@/lib/session';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { method } = req;
@@ -28,11 +30,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 // Get Conversations
 const handleGET = async (req: NextApiRequest, res: NextApiResponse) => {
   const { tenant } = req.query;
+  const session = await getSession(req, res);
 
-  const conversations = await prisma.lLMConversation.findMany({
-    where: {
-      tenant: tenant as string,
-    },
+  const { chatController } = await controllers(jacksonOptions);
+
+  const conversations = await chatController.getConversationsByTenantAndUser({
+    tenant: tenant as string,
+    userId: session?.user.id as string,
   });
 
   res.json({ data: conversations });

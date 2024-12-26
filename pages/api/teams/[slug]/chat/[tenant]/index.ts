@@ -1,13 +1,9 @@
 import { ApiError } from '@/lib/errors';
-import { LLMChat, LLMConversation, LLMModel, LLMProvider } from '@/lib/llm';
-import crypto from 'crypto';
-import { JacksonError } from '@/lib/llm/controller/error';
+import controllers, { LLMProvider } from '@/lib/llm';
 import { generateChatResponse } from '@/lib/llm/llm';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { prisma } from '@/lib/prisma';
-import { LLM_PROVIDERS } from '@/lib/llm/ee/chat/llm-providers';
-import { LLMConfig } from '@prisma/client';
 import { getSession } from '@/lib/session';
+import { jacksonOptions } from '@/lib/llm/env';
 
 /**
  * If no conversationId is provided it will be treated as new conversation and will be created.
@@ -44,6 +40,7 @@ async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
   const { tenant } = req.query;
   const { messages, model, provider, isChatWithPDFProvider } = req.body;
   const session = await getSession(req, res);
+  const { chatController } = await controllers(jacksonOptions);
 
   let { conversationId } = req.body;
 
@@ -60,7 +57,7 @@ async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
   }
 
   try {
-    const llmConfigs = await getLLMConfigsByTenantAndProvider(
+    const llmConfigs = await chatController.getLLMConfigsByTenantAndProvider(
       tenant as string,
       isChatWithPDFProvider ? 'openai' : provider
     );
@@ -76,7 +73,7 @@ async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
       return;
     }
     if (!isChatWithPDFProvider) {
-      const allowedModels = await getLLMModels(
+      const allowedModels = await chatController.getLLMModels(
         tenant as string,
         provider as LLMProvider
       );
@@ -112,7 +109,7 @@ async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
     }
 
     if (!conversationId) {
-      const conversation = await createConversation({
+      const conversation = await chatController.createConversation({
         tenant: tenant as string,
         userId: session?.user.id as string,
         title: messages[0].content.trim().slice(0, 50),
@@ -121,14 +118,15 @@ async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
       });
       conversationId = conversation.id;
     } else {
-      const conversation = await getConversationById(conversationId);
+      const conversation =
+        await chatController.getConversationById(conversationId);
       if (!conversation) {
         res.status(404).json({ error: { message: 'Conversation not found' } });
         return;
       }
     }
 
-    await createChat({
+    await chatController.createChat({
       conversationId,
       role: 'user',
       content: messages[messages.length - 1].content,
@@ -156,7 +154,7 @@ async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
     }
 
     if (typeof responseMessage === 'string') {
-      await createChat({
+      await chatController.createChat({
         conversationId,
         role: 'assistant',
         content: responseMessage,
@@ -191,7 +189,7 @@ async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
       await res.write(JSON.stringify({ conversationId }) + '\n');
       res.end();
 
-      await createChat({
+      await chatController.createChat({
         conversationId,
         role: 'assistant',
         content: message,
@@ -220,95 +218,6 @@ const decodeError = (provider: string, error: any) => {
       };
   }
   return { status: 500, message: error?.message };
-};
-
-const getLLMConfigsByTenantAndProvider = async (
-  tenant: string,
-  provider: LLMProvider
-) => {
-  return await prisma.lLMConfig.findMany({
-    where: {
-      tenant,
-      provider,
-    },
-  });
-};
-
-const getLLMModels = async (
-  tenant: string,
-  provider: LLMProvider,
-  filterByTenant?: boolean // fetch models by saved configs
-) => {
-  if (filterByTenant) {
-    const configs = await getLLMConfigsByTenantAndProvider(tenant, provider);
-    if (configs.length === 0) {
-      throw new JacksonError('Config not found', 404);
-    }
-
-    const modelsFromConfigs = Array.from(
-      new Set(configs.flatMap((c: LLMConfig) => c.models))
-    ).filter(Boolean);
-
-    if (modelsFromConfigs.length === 0) {
-      throw new JacksonError('No models found', 404);
-    }
-
-    const models = modelsFromConfigs
-      .map((model: string) =>
-        LLM_PROVIDERS[provider].models.find((m) => m.id === model)
-      )
-      .filter((m) => m !== undefined);
-
-    return models as LLMModel[]; // Type assertion to ensure correct type
-  }
-
-  return LLM_PROVIDERS[provider].models;
-};
-
-const createConversation = async (
-  conversation: Omit<LLMConversation, 'id' | 'createdAt'>
-) => {
-  const conversationID = crypto.randomBytes(20).toString('hex');
-  const createdAt = new Date(); // Use Date object for createdAt
-
-  const newConversation = await prisma.lLMConversation.create({
-    data: {
-      ...conversation,
-      id: conversationID,
-      createdAt,
-      tenant: conversation.tenant, // Ensure to include any required fields for the model
-    },
-  });
-
-  return newConversation; // Return the created conversation directly
-};
-
-const getConversationById = async (conversationId: string) => {
-  const conversation = await prisma.lLMConversation.findUnique({
-    where: { id: conversationId },
-  });
-
-  if (!conversation) {
-    throw new JacksonError('Conversation not found', 404);
-  }
-
-  return conversation;
-};
-
-const createChat = async (chat: Omit<LLMChat, 'id' | 'createdAt'>) => {
-  const chatID = crypto.randomBytes(20).toString('hex');
-  const createdAt = new Date(); // Use Date object for createdAt
-
-  const newChat = await prisma?.chatStore.create({
-    data: {
-      ...chat,
-      id: chatID,
-      createdAt,
-      conversationId: chat.conversationId, // Ensure to include any required fields for the model
-    },
-  });
-
-  return newChat; // Return the created chat directly
 };
 
 export default handler;
