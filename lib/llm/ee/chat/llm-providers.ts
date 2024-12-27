@@ -237,6 +237,10 @@ export const LLM_PROVIDERS: LLMProvidersType = {
         id: 'llama3',
         name: 'llama3',
       },
+      {
+        id: 'llama3.2',
+        name: 'llama3.2',
+      },
     ],
   },
 };
