@@ -1,8 +1,4 @@
-import {
-  RectangleStackIcon,
-  ShieldCheckIcon,
-  UserCircleIcon,
-} from '@heroicons/react/24/outline';
+import { Layers, ShieldCheck, UserCircle } from 'lucide-react';
 import { useTranslation } from 'next-i18next';
 import NavigationItems from './NavigationItems';
 import { MenuItem, NavigationProps } from './NavigationItems';
@@ -14,19 +10,19 @@ const UserNavigation = ({ activePathname }: NavigationProps) => {
     {
       name: t('all-teams'),
       href: '/teams',
-      icon: RectangleStackIcon,
+      icon: Layers,
       active: activePathname === '/teams',
     },
     {
       name: t('account'),
       href: '/settings/account',
-      icon: UserCircleIcon,
+      icon: UserCircle,
       active: activePathname === '/settings/account',
     },
     {
       name: t('security'),
       href: '/settings/security',
-      icon: ShieldCheckIcon,
+      icon: ShieldCheck,
       active: activePathname === '/settings/security',
     },
   ];

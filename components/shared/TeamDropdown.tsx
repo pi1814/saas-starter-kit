@@ -1,10 +1,11 @@
 import {
-  ChevronUpDownIcon,
-  FolderIcon,
-  FolderPlusIcon,
-  RectangleStackIcon,
-  UserCircleIcon,
-} from '@heroicons/react/24/outline';
+  ChevronsUpDown,
+  Folder,
+  FolderPlus,
+  Layers,
+  CircleUser,
+} from 'lucide-react';
+
 import useTeams from 'hooks/useTeams';
 import { useSession } from 'next-auth/react';
 import { useTranslation } from 'next-i18next';
@@ -31,7 +32,7 @@ const TeamDropdown = () => {
         id: team.id,
         name: team.name,
         href: `/teams/${team.slug}/settings`,
-        icon: FolderIcon,
+        icon: Folder,
       })),
     },
     {
@@ -42,7 +43,7 @@ const TeamDropdown = () => {
           id: data?.user.id,
           name: data?.user?.name,
           href: '/settings/account',
-          icon: UserCircleIcon,
+          icon: CircleUser,
         },
       ],
     },
@@ -54,13 +55,13 @@ const TeamDropdown = () => {
           id: 'all-teams',
           name: t('all-teams'),
           href: '/teams',
-          icon: RectangleStackIcon,
+          icon: Layers,
         },
         {
           id: 'new-team',
           name: t('new-team'),
           href: '/teams?newTeam=true',
-          icon: FolderPlusIcon,
+          icon: FolderPlus,
         },
       ],
     },
@@ -77,7 +78,7 @@ const TeamDropdown = () => {
             0,
             maxLengthPolicies.nameShortDisplay
           )}{' '}
-        <ChevronUpDownIcon className="w-5 h-5" />
+        <ChevronsUpDown className="w-5 h-5" />
       </div>
       <ul
         tabIndex={0}

@@ -1,4 +1,4 @@
-import { Cog6ToothIcon, CodeBracketIcon } from '@heroicons/react/24/outline';
+import { Settings, Code } from 'lucide-react';
 import { useTranslation } from 'next-i18next';
 import NavigationItems from './NavigationItems';
 import { NavigationProps, MenuItem } from './NavigationItems';
@@ -13,13 +13,13 @@ const TeamNavigation = ({ slug, activePathname }: NavigationItemsProps) => {
     {
       name: t('all-products'),
       href: `/teams/${slug}/products`,
-      icon: CodeBracketIcon,
+      icon: Code,
       active: activePathname === `/teams/${slug}/products`,
     },
     {
       name: t('settings'),
       href: `/teams/${slug}/settings`,
-      icon: Cog6ToothIcon,
+      icon: Settings,
       active:
         activePathname?.startsWith(`/teams/${slug}`) &&
         !activePathname.includes('products'),

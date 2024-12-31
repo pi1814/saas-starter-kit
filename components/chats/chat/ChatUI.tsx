@@ -81,7 +81,7 @@ export function ChatUI({ slug }) {
         setIsChatWithPDFProvider,
       }}
     >
-      <div className="w-full h-full relative flex bg-gray-50 border border-gray-200 rounded-lg shadow-md">
+      <div className="w-full h-screen relative flex bg-gray-50 border border-gray-200 rounded-lg shadow-md">
         <ChatDrawer
           isChatDrawerVisible={isChatDrawerVisible}
           toggleChatDrawerVisibility={toggleChatDrawerVisibility}
@@ -90,7 +90,7 @@ export function ChatUI({ slug }) {
           conversationId={conversationId}
           setConversationId={setConversationId}
         />
-        <div className="flex max-w-full flex-col w-full h-full">
+        <div className="flex max-w-full flex-col w-full h-screen">
           <div className="sticky top-0 z-10 flex items-center border-b border-white/20 bg-gray-800 pl-1 pt-1 text-gray-200 sm:pl-3 md:hidden">
             <button
               type="button"
@@ -116,13 +116,13 @@ export function ChatUI({ slug }) {
               <Plus className="h-6 w-6" />
             </button>
           </div>
-          <div className="flex-1 max-h-full h-full p-4 bg-white border-t border-gray-300 rounded-b-lg shadow-inner">
+          <div className="flex-1 max-h-screen h-screen p-4 bg-white border-t border-gray-300 rounded-b-lg shadow-inner">
             {showSettings ? (
               <div className="p-4 border-t border-gray-300 bg-white rounded-b-lg shadow-inner">
                 <ChatSettings />
               </div>
             ) : (
-              <div className="h-full border-t border-gray-300 bg-white rounded-b-lg shadow-inner">
+              <div className="h-screen border-t border-gray-300 bg-white rounded-b-lg shadow-inner">
                 <Chat
                   setShowSettings={setShowSettings}
                   conversationId={conversationId}

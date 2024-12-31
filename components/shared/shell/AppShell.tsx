@@ -30,7 +30,7 @@ export default function AppShell({ children }) {
           <Drawer sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
         </div>
 
-        <main className="flex-1 p-3 h-lvh">{children}</main>
+        <main className="flex-1 p-3 h-dvh">{children}</main>
       </div>
     </div>
   );

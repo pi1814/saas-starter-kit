@@ -308,9 +308,9 @@ const Chat = ({
   )?.name;
 
   return (
-    <div className="relative h-full w-full flex flex-col items-stretch flex-1">
-      <div className="flex-1 h-full">
-        <div className="h-full bg-white dark:bg-gray-800 flex flex-col">
+    <div className="relative h-screen w-full flex flex-col items-stretch flex-1">
+      <div className="flex-1 h-screen">
+        <div className="h-screen bg-white dark:bg-gray-800 flex flex-col">
           {showProviderSelection && !conversationId && (
             <div className="py-6 relative w-full bg-gray-50">
               <div className="flex items-center justify-center gap-4 max-w-4xl mx-auto px-4">
@@ -398,7 +398,7 @@ const Chat = ({
             className={undefined}
           />
           {showCreateLLMConfigMessage && (
-            <div className="py-10 relative w-full flex flex-col h-full">
+            <div className="py-10 relative w-full flex flex-col h-screen">
               <div className="flex items-center justify-center gap-2">
                 {t('bui-chat-no-chat-configs-found')}
               </div>

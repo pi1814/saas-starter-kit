@@ -1,7 +1,7 @@
 import toast from 'react-hot-toast';
 import { Button } from 'react-daisyui';
 import { useState } from 'react';
-import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline';
+import { SquareArrowOutUpRight } from 'lucide-react';
 import { useTranslation } from 'next-i18next';
 
 import { Card } from '@/components/shared';
@@ -57,7 +57,7 @@ const LinkToPortal = ({ team }: LinkToPortalProps) => {
             onClick={() => openStripePortal()}
           >
             {t('billing-portal')}
-            <ArrowTopRightOnSquareIcon className="w-5 h-5 ml-2" />
+            <SquareArrowOutUpRight className="w-5 h-5 ml-2" />
           </Button>
         </div>
       </Card.Body>

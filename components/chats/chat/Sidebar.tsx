@@ -24,8 +24,8 @@ const Sidebar = ({
   const setIsChatWithPDFProvider =
     useContext(ConversationContext)?.setIsChatWithPDFProvider;
   return (
-    <div className="flex h-full w-full flex-1 items-start border-white/20 dark:bg-gray-800">
-      <nav className="flex h-full flex-1 flex-col space-y-1 p-2">
+    <div className="flex h-screen w-full flex-1 items-start border-white/20 dark:bg-gray-800">
+      <nav className="flex h-screen flex-1 flex-col space-y-1 p-2">
         <div
           className="flex py-3 px-3 items-center gap-3 rounded-md hover:bg-gray-500/10 transition-colors duration-200 text-white cursor-pointer text-sm mb-1 flex-shrink-0 border border-white/20"
           onClick={() => {
