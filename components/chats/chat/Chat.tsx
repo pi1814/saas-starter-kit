@@ -380,7 +380,7 @@ const Chat = ({
             </div>
           )}
           {selectedProvider && selectedModel && (
-            <div className="sticky top-0 z-40 rounded-xl flex w-full items-center justify-center gap-1 border-b border-gray-200 bg-gray-50 p-3 text-gray-700 shadow-sm">
+            <div className="rounded-xl flex w-full items-center justify-center gap-1 border-b border-gray-200 bg-gray-50 p-3 text-gray-700 shadow-sm">
               {t('bui-chat-provider')}: {providerName} | {t('bui-chat-model')}:{' '}
               {modelName || ''}
               {isArchived && (
@@ -416,23 +416,24 @@ const Chat = ({
               </div>
             </div>
           )}
+
+          <DynamicChatInput
+            message={message}
+            setMessage={setMessage}
+            sendMessage={sendMessage}
+            handleKeypress={handleKeypress}
+            handleFileChange={handleFileChange}
+            isChatWithPDFProvider={isChatWithPDFProvider}
+            isUploadingFile={isUploadingFile}
+            provider={provider}
+            selectedProvider={selectedProvider}
+            model={model}
+            selectedModel={selectedModel}
+            requestInProgress={requestInProgress}
+            isArchived={isArchived}
+          />
         </div>
       </div>
-      <DynamicChatInput
-        message={message}
-        setMessage={setMessage}
-        sendMessage={sendMessage}
-        handleKeypress={handleKeypress}
-        handleFileChange={handleFileChange}
-        isChatWithPDFProvider={isChatWithPDFProvider}
-        isUploadingFile={isUploadingFile}
-        provider={provider}
-        selectedProvider={selectedProvider}
-        model={model}
-        selectedModel={selectedModel}
-        requestInProgress={requestInProgress}
-        isArchived={isArchived}
-      />
     </div>
   );
 };
