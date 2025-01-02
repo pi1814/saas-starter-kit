@@ -308,9 +308,9 @@ const Chat = ({
   )?.name;
 
   return (
-    <div className="relative h-screen w-full flex flex-col items-stretch flex-1">
-      <div className="flex-1 h-screen">
-        <div className="h-screen bg-white dark:bg-gray-800 flex flex-col">
+    <div className="relative h-[93vh] w-full flex flex-col items-stretch flex-1">
+      <div className="flex-1 h-[93vh]">
+        <div className="h-[93vh] bg-white dark:bg-gray-800 flex flex-col">
           {showProviderSelection && !conversationId && (
             <div className="py-6 relative w-full bg-gray-50">
               <div className="flex items-center justify-center gap-4 max-w-4xl mx-auto px-4">
@@ -380,7 +380,7 @@ const Chat = ({
             </div>
           )}
           {selectedProvider && selectedModel && (
-            <div className="rounded-xl flex w-full items-center justify-center gap-1 border-b border-gray-200 bg-gray-50 p-3 text-gray-700 shadow-sm">
+            <div className="rounded-xl flex w-full items-center justify-center gap-1 border-b bg-gray-50 p-3 text-gray-700 shadow-sm">
               {t('bui-chat-provider')}: {providerName} | {t('bui-chat-model')}:{' '}
               {modelName || ''}
               {isArchived && (
@@ -398,7 +398,7 @@ const Chat = ({
             className={undefined}
           />
           {showCreateLLMConfigMessage && (
-            <div className="py-10 relative w-full flex flex-col h-screen">
+            <div className="py-10 relative w-full flex flex-col h-[93vh]">
               <div className="flex items-center justify-center gap-2">
                 {t('bui-chat-no-chat-configs-found')}
               </div>

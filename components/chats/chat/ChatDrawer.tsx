@@ -32,7 +32,7 @@ export default function ChatDrawer(props: ChatDrawerProps) {
         />
       ) : null}
       <div className="dark hidden flex-shrink-0 bg-gray-900 md:flex md:w-[260px] md:flex-col">
-        <div className="flex h-screen min-h-0 flex-col ">
+        <div className="flex h-[93vh] min-h-0 flex-col ">
           <Sidebar
             setShowSettings={setShowSettings}
             conversations={conversations}

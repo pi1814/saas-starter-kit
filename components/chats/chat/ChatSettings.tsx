@@ -166,7 +166,7 @@ export default function ChatSettings() {
 
   return (
     <>
-      <Card className="h-screen">
+      <Card className="h-[88vh]">
         <Card.Body>
           <Card.Header>
             <Card.Title>
