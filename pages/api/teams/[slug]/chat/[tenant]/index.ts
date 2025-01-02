@@ -99,7 +99,7 @@ async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
       config = llmConfigs.find((c) => c.isChatWithPDFProvider);
       if (config === undefined) {
         res.status(400).json({
-          error: { message: 'No config found for chat with PDF' },
+          error: { message: 'No config found for chat with Document' },
         });
         return;
       }

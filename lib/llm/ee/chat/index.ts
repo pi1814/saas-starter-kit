@@ -43,22 +43,27 @@ export class ChatController {
   public async getLLMConfigFromVault(
     tenant: string,
     token: string
-  ): Promise<{
-    apiKey: string;
-    baseURL: string;
-  }> {
-    const res = await axios.get(
-      `${this.opts.terminus?.hostUrl}/v1/vault/${tenant}/${this.opts.terminus?.llm?.product}/data?token=${token}`,
-      {
-        headers: {
-          Authorization: `api-key ${this.opts.terminus?.apiKey?.read}`,
-        },
+  ): Promise<
+    | {
+        apiKey: string;
+        baseURL: string;
       }
-    );
-    if (res.data[token]) {
-      return JSON.parse(res.data[token]?.data);
-    } else {
-      throw new JacksonError('Config not found in Vault', 404);
+    | undefined
+  > {
+    if (this.opts.terminus?.hostUrl) {
+      const res = await axios.get(
+        `${this.opts.terminus?.hostUrl}/v1/vault/${tenant}/${this.opts.terminus?.llm?.product}/data?token=${token}`,
+        {
+          headers: {
+            Authorization: `api-key ${this.opts.terminus?.apiKey?.read}`,
+          },
+        }
+      );
+      if (res.data[token]) {
+        return JSON.parse(res.data[token]?.data);
+      } else {
+        throw new JacksonError('Config not found in Vault', 404);
+      }
     }
   }
 
@@ -119,20 +124,22 @@ export class ChatController {
     apiKey?: string;
     baseURL?: string;
   }): Promise<string | undefined> {
-    const res = await axios.post(
-      `${this.opts.terminus?.hostUrl}/v1/vault/${tenant}/${this.opts.terminus?.llm?.product}/data`,
-      {
-        apiKey: apiKey || '',
-      },
-      {
-        headers: {
-          Authorization: `api-key ${this.opts.terminus?.apiKey?.write}`,
+    if (this.opts.terminus?.hostUrl) {
+      const res = await axios.post(
+        `${this.opts.terminus?.hostUrl}/v1/vault/${tenant}/${this.opts.terminus?.llm?.product}/data`,
+        {
+          apiKey: apiKey || '',
         },
-      }
-    );
+        {
+          headers: {
+            Authorization: `api-key ${this.opts.terminus?.apiKey?.write}`,
+          },
+        }
+      );
 
-    if (res.data?.token) {
-      return res.data.token;
+      if (res.data?.token) {
+        return res.data.token;
+      }
     }
   }
 
@@ -152,15 +159,13 @@ export class ChatController {
     );
 
     // Store the LLM config in the database using Prisma
-    const config = await this.llmConfigStore.create({
-      data: {
-        provider: llmConfig.provider,
-        baseURL: llmConfig.baseURL || '',
-        models: llmConfig.models || [],
-        terminusToken: vaultResult || '',
-        tenant,
-        isChatWithPDFProvider,
-      },
+    const config = await this.storeLLMConfig({
+      provider: llmConfig.provider,
+      baseURL: llmConfig.baseURL || '',
+      models: llmConfig.models || [],
+      terminusToken: vaultResult || '',
+      tenant,
+      isChatWithPDFProvider,
     });
 
     return config;
@@ -177,17 +182,19 @@ export class ChatController {
     apiKey?: string;
     baseURL?: string;
   }) {
-    await axios.put(
-      `${this.opts.terminus?.hostUrl}/v1/vault/${tenant}/${this.opts.terminus?.llm?.product}/data?token=${token}`,
-      {
-        apiKey,
-      },
-      {
-        headers: {
-          Authorization: `api-key ${this.opts.terminus?.apiKey?.write}`,
+    if (this.opts.terminus?.hostUrl) {
+      await axios.put(
+        `${this.opts.terminus?.hostUrl}/v1/vault/${tenant}/${this.opts.terminus?.llm?.product}/data?token=${token}`,
+        {
+          apiKey,
         },
-      }
-    );
+        {
+          headers: {
+            Authorization: `api-key ${this.opts.terminus?.apiKey?.write}`,
+          },
+        }
+      );
+    }
   }
 
   public async updateLLMConfig(
@@ -210,7 +217,7 @@ export class ChatController {
     );
 
     if (!configFromVault) {
-      throw new Error('Config not found in Vault'); // Adjust error handling as needed
+      console.error('Config not found in Vault'); // Adjust error handling as needed
     }
 
     // Update the configuration in the vault
@@ -218,7 +225,7 @@ export class ChatController {
       token: config.terminusToken as string,
       tenant: config.tenant,
       provider: llmConfig.provider,
-      apiKey: llmConfig.apiKey || configFromVault.apiKey,
+      apiKey: llmConfig.apiKey || configFromVault?.apiKey,
       baseURL: llmConfig.baseURL,
     });
 
@@ -419,7 +426,7 @@ export class ChatController {
     const mappings = this.opts.llm?.documentChat?.roleMapping.split(',');
     if (!mappings) {
       throw new JacksonError(
-        'Could not find role mappings on server for chatting with PDF',
+        'Could not find role mappings on server for chatting with Document',
         500
       );
     }
@@ -443,7 +450,7 @@ export class ChatController {
   public async generateDocumentChatJWT({ email }: { email: string }) {
     if (!this.opts.llm?.documentChat?.jwtSigningKey) {
       throw new JacksonError(
-        'Could not load JWT signing keys for chatting with PDF',
+        'Could not load JWT signing keys for chatting with Document',
         500
       );
     }
