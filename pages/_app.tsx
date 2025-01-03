@@ -2,7 +2,7 @@ import app from '@/lib/app';
 import { SessionProvider } from 'next-auth/react';
 import { appWithTranslation } from 'next-i18next';
 import Head from 'next/head';
-import { Toaster } from 'react-hot-toast';
+import toast, { ToastBar, Toaster } from 'react-hot-toast';
 import colors from 'tailwindcss/colors';
 import type { AppPropsWithLayout } from 'types';
 import mixpanel from 'mixpanel-browser';
@@ -44,15 +44,24 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
       </Head>
       <SessionProvider session={session}>
         <Toaster
-          position="top-center"
           toastOptions={{
             duration: 3000,
-            style: {
-              background: '#f44336',
-              color: '#fff',
-            },
           }}
-        />
+        >
+          {(t) => (
+            <ToastBar toast={t}>
+              {({ icon, message }) => (
+                <>
+                  {icon}
+                  {message}
+                  {t.type !== 'loading' && (
+                    <button onClick={() => toast.dismiss(t.id)}>X</button>
+                  )}
+                </>
+              )}
+            </ToastBar>
+          )}
+        </Toaster>
         <Themer
           overrideTheme={{
             '--primary-color': colors.blue['500'],
