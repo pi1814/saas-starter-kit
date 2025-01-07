@@ -1,4 +1,7 @@
 {
+  "bui-chat-conversation-deleted": "Conversation deleted successfully",
+  "bui-chat-conversation-deletion-description": "Removing this conversation will prevent users from accessing it. This action cannot be undone.",
+  "bui-chat-conversation-deletion-title": "Confirm deletion of the Conversation",
   "bui-shared-name": "Name",
   "bui-shared-tenant": "Tenant",
   "bui-shared-product": "Product",

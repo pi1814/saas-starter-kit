@@ -11,6 +11,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       case 'GET':
         await handleGET(req, res);
         break;
+      case 'DELETE':
+        await handleDELETE(req, res);
+        break;
       default:
         res.setHeader('Allow', 'GET');
         res.status(405).json({
@@ -40,6 +43,28 @@ const handleGET = async (req: NextApiRequest, res: NextApiResponse) => {
   );
 
   if (chat) res.json({ data: chat });
+};
+
+const handleDELETE = async (req: NextApiRequest, res: NextApiResponse) => {
+  const { tenant } = req.query;
+  const session = await getSession(req, res);
+  const { chatController } = await controllers(jacksonOptions);
+
+  const conversation = await chatController.getConversationById(
+    req.query.conversationId as string
+  );
+
+  if (tenant !== conversation.tenant) {
+    throw new Error('Forbidden');
+  }
+
+  if (session?.user.id !== conversation.userId) {
+    throw new Error('Forbidden');
+  }
+
+  await chatController.deleteChatByConversationId(
+    req.query.conversationId as string
+  );
 };
 
 export default handler;

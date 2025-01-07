@@ -259,14 +259,16 @@ export class ChatController {
       where: { id: configId },
     });
 
-    await axios.delete(
-      `${this.opts.terminus?.hostUrl}/v1/vault/${tenant}/${this.opts.terminus?.llm?.product}/data?token=${config.terminusToken}`,
-      {
-        headers: {
-          Authorization: `api-key ${this.opts.terminus?.apiKey?.write}`,
-        },
-      }
-    );
+    if (this.opts.terminus?.hostUrl) {
+      await axios.delete(
+        `${this.opts.terminus?.hostUrl}/v1/vault/${tenant}/${this.opts.terminus?.llm?.product}/data?token=${config.terminusToken}`,
+        {
+          headers: {
+            Authorization: `api-key ${this.opts.terminus?.apiKey?.write}`,
+          },
+        }
+      );
+    }
   }
 
   public async getConversationsByTenantAndUser({
@@ -326,6 +328,30 @@ export class ChatController {
     });
 
     return newChat;
+  }
+
+  public async deleteChatByConversationId(
+    conversationId: string,
+    tenant: string,
+    userId: string
+  ) {
+    const conversation = await this.getConversationById(conversationId);
+
+    if (tenant !== conversation.tenant) {
+      throw new Error('Forbidden');
+    }
+
+    if (userId !== conversation.userId) {
+      throw new Error('Forbidden');
+    }
+
+    await this.chatStore.deleteMany({
+      where: { conversationId: conversationId },
+    });
+
+    await this.conversationStore.delete({
+      where: { id: conversationId },
+    });
   }
 
   public async getChatThreadByConversationId(
