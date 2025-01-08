@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline';
+import { SquareArrowOutUpRight } from 'lucide-react';
 import { useTranslation } from 'next-i18next';
 
 import { Card } from '@/components/shared';
@@ -22,7 +22,7 @@ const Help = () => {
             rel="noopener noreferrer"
           >
             {t('contact-support')}
-            <ArrowTopRightOnSquareIcon className="w-5 h-5 ml-2" />
+            <SquareArrowOutUpRight className="w-5 h-5 ml-2" />
           </Link>
         </div>
       </Card.Body>

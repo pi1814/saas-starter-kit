@@ -1,12 +1,12 @@
 import {
-  Cog6ToothIcon,
-  DocumentMagnifyingGlassIcon,
-  KeyIcon,
-  PaperAirplaneIcon,
-  ShieldExclamationIcon,
-  UserPlusIcon,
-  BanknotesIcon,
-} from '@heroicons/react/24/outline';
+  Settings,
+  FileSearch2,
+  KeyRound,
+  SendHorizonal,
+  ShieldAlert,
+  UserPlus,
+  Banknote,
+} from 'lucide-react';
 import type { Team } from '@prisma/client';
 import classNames from 'classnames';
 import useCanAccess from 'hooks/useCanAccess';
@@ -28,7 +28,7 @@ const TeamTab = ({ activeTab, team, heading, teamFeatures }: TeamTabProps) => {
       name: 'Settings',
       href: `/teams/${team.slug}/settings`,
       active: activeTab === 'settings',
-      icon: Cog6ToothIcon,
+      icon: Settings,
     },
   ];
 
@@ -37,7 +37,7 @@ const TeamTab = ({ activeTab, team, heading, teamFeatures }: TeamTabProps) => {
       name: 'Members',
       href: `/teams/${team.slug}/members`,
       active: activeTab === 'members',
-      icon: UserPlusIcon,
+      icon: UserPlus,
     });
   }
 
@@ -49,7 +49,7 @@ const TeamTab = ({ activeTab, team, heading, teamFeatures }: TeamTabProps) => {
       name: 'Single Sign-On',
       href: `/teams/${team.slug}/sso`,
       active: activeTab === 'sso',
-      icon: ShieldExclamationIcon,
+      icon: ShieldAlert,
     });
   }
 
@@ -61,7 +61,7 @@ const TeamTab = ({ activeTab, team, heading, teamFeatures }: TeamTabProps) => {
       name: 'Directory Sync',
       href: `/teams/${team.slug}/directory-sync`,
       active: activeTab === 'directory-sync',
-      icon: UserPlusIcon,
+      icon: UserPlus,
     });
   }
 
@@ -73,7 +73,7 @@ const TeamTab = ({ activeTab, team, heading, teamFeatures }: TeamTabProps) => {
       name: 'Audit Logs',
       href: `/teams/${team.slug}/audit-logs`,
       active: activeTab === 'audit-logs',
-      icon: DocumentMagnifyingGlassIcon,
+      icon: FileSearch2,
     });
   }
 
@@ -85,7 +85,7 @@ const TeamTab = ({ activeTab, team, heading, teamFeatures }: TeamTabProps) => {
       name: 'Billing',
       href: `/teams/${team.slug}/billing`,
       active: activeTab === 'payments',
-      icon: BanknotesIcon,
+      icon: Banknote,
     });
   }
 
@@ -97,7 +97,7 @@ const TeamTab = ({ activeTab, team, heading, teamFeatures }: TeamTabProps) => {
       name: 'Webhooks',
       href: `/teams/${team.slug}/webhooks`,
       active: activeTab === 'webhooks',
-      icon: PaperAirplaneIcon,
+      icon: SendHorizonal,
     });
   }
 
@@ -109,7 +109,7 @@ const TeamTab = ({ activeTab, team, heading, teamFeatures }: TeamTabProps) => {
       name: 'API Keys',
       href: `/teams/${team.slug}/api-keys`,
       active: activeTab === 'api-keys',
-      icon: KeyIcon,
+      icon: KeyRound,
     });
   }
 

@@ -1,7 +1,8 @@
 import useSWR from 'swr';
 import { useState } from 'react';
 import { useTranslation } from 'next-i18next';
-import { ComputerDesktopIcon } from '@heroicons/react/24/outline';
+import { Laptop } from 'lucide-react';
+
 import toast from 'react-hot-toast';
 
 import fetcher from '@/lib/fetcher';
@@ -75,7 +76,7 @@ const ManageSessions = () => {
                   wrap: true,
                   element: (
                     <span className="items-center flex">
-                      <ComputerDesktopIcon className="w-6 h-6 inline-block mr-1 text-primary" />
+                      <Laptop className="w-6 h-6 inline-block mr-1 text-primary" />
                       {session.isCurrent ? t('this-browser') : t('other')}
                     </span>
                   ),

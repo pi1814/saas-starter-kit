@@ -26,12 +26,14 @@ const Settings = ({ teamFeatures }: { teamFeatures: TeamFeature }) => {
 
   return (
     <>
-      <TeamTab activeTab="settings" team={team} teamFeatures={teamFeatures} />
-      <div className="space-y-6">
-        <TeamSettings team={team} />
-        <AccessControl resource="team" actions={['delete']}>
-          <RemoveTeam team={team} allowDelete={teamFeatures.deleteTeam} />
-        </AccessControl>
+      <div className="p-3">
+        <TeamTab activeTab="settings" team={team} teamFeatures={teamFeatures} />
+        <div className="space-y-6">
+          <TeamSettings team={team} />
+          <AccessControl resource="team" actions={['delete']}>
+            <RemoveTeam team={team} allowDelete={teamFeatures.deleteTeam} />
+          </AccessControl>
+        </div>
       </div>
     </>
   );

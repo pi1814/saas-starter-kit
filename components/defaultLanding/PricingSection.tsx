@@ -1,4 +1,4 @@
-import { CheckIcon } from '@heroicons/react/20/solid';
+import { Check } from 'lucide-react';
 import { useTranslation } from 'next-i18next';
 import { Button, Card } from 'react-daisyui';
 
@@ -38,7 +38,7 @@ const PricingSection = () => {
                                 key={`plan-${index}-benefit-${itemIndex}`}
                                 className="flex items-center"
                               >
-                                <CheckIcon className="h-5 w-5" />
+                                <Check className="h-5 w-5" />
                                 <span className="ml-1">{benefit}</span>
                               </li>
                             );

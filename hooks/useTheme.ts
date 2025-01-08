@@ -1,8 +1,4 @@
-import {
-  ComputerDesktopIcon,
-  MoonIcon,
-  SunIcon,
-} from '@heroicons/react/24/outline';
+import { Laptop, Moon, Sun } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'next-i18next';
 
@@ -20,17 +16,17 @@ const useTheme = () => {
     {
       id: 'system',
       name: t('system'),
-      icon: ComputerDesktopIcon,
+      icon: Laptop,
     },
     {
       id: 'dark',
       name: t('dark'),
-      icon: MoonIcon,
+      icon: Moon,
     },
     {
       id: 'light',
       name: t('light'),
-      icon: SunIcon,
+      icon: Sun,
     },
   ];
 

@@ -12,7 +12,7 @@ interface UpdateAccountProps {
 
 const UpdateAccount = ({ user, allowEmailChange }: UpdateAccountProps) => {
   return (
-    <div className="flex gap-6 flex-col">
+    <div className="flex gap-6 p-3 flex-col">
       <UpdateName user={user} />
       <UpdateEmail user={user} allowEmailChange={allowEmailChange} />
       <UploadAvatar user={user} />

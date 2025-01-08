@@ -2,7 +2,7 @@ import toast from 'react-hot-toast';
 import { Button } from 'react-daisyui';
 import { useTranslation } from 'next-i18next';
 import React, { useState, useEffect, useCallback } from 'react';
-import { ArrowUpCircleIcon } from '@heroicons/react/24/outline';
+import { CircleArrowUp } from 'lucide-react';
 
 import type { ApiResponse } from 'types';
 import type { User } from '@prisma/client';
@@ -129,7 +129,7 @@ const UploadAvatar = ({ user }: { user: Partial<User> }) => {
                     : 'group-hover:bg-gray-50'
                 }`}
               >
-                <ArrowUpCircleIcon
+                <CircleArrowUp
                   className={`${
                     dragActive ? 'scale-110' : 'scale-100'
                   } h-50 w-50 text-gray-500 transition-all duration-75 group-hover:scale-110 group-active:scale-95`}

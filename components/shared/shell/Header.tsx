@@ -1,13 +1,8 @@
 import Link from 'next/link';
 import React from 'react';
 import { useSession } from 'next-auth/react';
-import {
-  ArrowRightOnRectangleIcon,
-  Bars3Icon,
-  SunIcon,
-  UserCircleIcon,
-} from '@heroicons/react/24/outline';
-import { ChevronDownIcon } from '@heroicons/react/20/solid';
+import { LogOut, Menu, Sun, UserCircle, ChevronDown } from 'lucide-react';
+
 import useTheme from 'hooks/useTheme';
 import env from '@/lib/env';
 import { signOut } from 'next-auth/react';
@@ -36,7 +31,7 @@ const Header = ({ setSidebarOpen }: HeaderProps) => {
         onClick={() => setSidebarOpen(true)}
       >
         <span className="sr-only">{t('open-sidebar')}</span>
-        <Bars3Icon className="h-6 w-6" aria-hidden="true" />
+        <Menu className="h-6 w-6" aria-hidden="true" />
       </button>
       <div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
         <div className="relative flex flex-1"></div>
@@ -50,7 +45,7 @@ const Header = ({ setSidebarOpen }: HeaderProps) => {
                 >
                   {user.name}
                 </button>
-                <ChevronDownIcon
+                <ChevronDown
                   className="ml-2 h-5 w-5 text-gray-400"
                   aria-hidden="true"
                 />
@@ -72,7 +67,7 @@ const Header = ({ setSidebarOpen }: HeaderProps) => {
                   className="block px-2 py-1 text-sm leading-6 text-gray-900 dark:text-gray-50 cursor-pointer"
                 >
                   <div className="flex items-center">
-                    <UserCircleIcon className="w-5 h-5 mr-1" /> {t('account')}
+                    <UserCircle className="w-5 h-5 mr-1" /> {t('account')}
                   </div>
                 </Link>
               </li>
@@ -85,7 +80,7 @@ const Header = ({ setSidebarOpen }: HeaderProps) => {
                     onClick={toggleTheme}
                   >
                     <div className="flex items-center">
-                      <SunIcon className="w-5 h-5 mr-1" /> {t('switch-theme')}
+                      <Sun className="w-5 h-5 mr-1" /> {t('switch-theme')}
                     </div>
                   </button>
                 </li>
@@ -98,8 +93,7 @@ const Header = ({ setSidebarOpen }: HeaderProps) => {
                   onClick={() => signOut()}
                 >
                   <div className="flex items-center">
-                    <ArrowRightOnRectangleIcon className="w-5 h-5 mr-1" />{' '}
-                    {t('logout')}
+                    <LogOut className="w-5 h-5 mr-1" /> {t('logout')}
                   </div>
                 </button>
               </li>

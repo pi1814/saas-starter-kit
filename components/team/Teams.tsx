@@ -49,7 +49,7 @@ const Teams = () => {
 
   return (
     <WithLoadingAndError isLoading={isLoading} error={isError}>
-      <div className="space-y-3">
+      <div className="p-3 space-y-3">
         <div className="flex justify-between items-center">
           <div className="space-y-3">
             <h2 className="text-xl font-medium leading-none tracking-tight">

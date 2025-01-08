@@ -184,6 +184,36 @@ model Price {
   service Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
 }
 
+model ChatStore {
+  id              String  @id @default(uuid())
+  createdAt       DateTime
+  conversationId  String
+  content         String
+  role            String
+}
+
+model LLMConversation {
+    id            String  @id @default(uuid())
+    tenant        String
+    userId        String
+    title         String
+    provider      String
+    model         String
+    createdAt     DateTime
+}
+
+model LLMConfig {
+  id                     String  @id @default(uuid())
+  createdAt              DateTime @default(now())
+  provider               String
+  baseURL                String
+  tenant                 String
+  models                 String[]
+  isChatWithPDFProvider  Boolean?
+  terminusToken          String?
+  apiKey                 String?
+}
+
 model jackson_store {
   key        String    @id(map: "_jackson_store_key") @db.VarChar(1500)
   value      String
