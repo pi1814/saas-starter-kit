@@ -63,8 +63,12 @@ const handleDELETE = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   await chatController.deleteChatByConversationId(
-    req.query.conversationId as string
+    req.query.conversationId as string,
+    tenant as string,
+    session.user.id as string
   );
+
+  res.status(204).end();
 };
 
 export default handler;

@@ -41,13 +41,11 @@ const Sidebar = ({
     );
 
     try {
-      setConversationId('');
       const response = await fetch(`${urls?.conversation}/${conversationId}`, {
         method: 'DELETE',
         headers: defaultHeaders,
       });
 
-      reloadConversations();
       if (!response.ok) {
         const json = await response.json();
         toast.error(json.error.message || 'Failed to delete conversation');
@@ -55,6 +53,8 @@ const Sidebar = ({
       }
 
       toast.success(t('bui-chat-conversation-deleted'));
+      setConversationId('');
+      reloadConversations();
     } catch (error) {
       console.error('Error deleting conversation:', error);
       toast.error('An error occurred while deleting the conversation.');

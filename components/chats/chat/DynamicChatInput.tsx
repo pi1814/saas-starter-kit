@@ -73,9 +73,11 @@ const DynamicChatInput = ({
                 className="p-2 text-gray-500 hover:bg-gray-100 rounded-full cursor-pointer transition-colors"
               >
                 {isUploadingFile ? (
-                  <div className="animate-spin h-5 w-5 border-2 border-gray-300 border-t-blue-500 rounded-full"></div>
+                  <div className="p-2 animate-spin h-5 w-5 border-2 border-gray-300 border-t-blue-500 rounded-full"></div>
                 ) : (
-                  <Paperclip className="h-5 w-5" />
+                  <div className="p-2 rounded-full transition-colors duration-200">
+                    <Paperclip className="h-5 w-5" />
+                  </div>
                 )}
               </label>
             </div>

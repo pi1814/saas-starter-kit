@@ -9,7 +9,7 @@ import { defaultHeaders } from '../utils';
 import DynamicChatInput from './DynamicChatInput';
 import ConversationArea from './ConversationArea';
 import { Error } from '@/components/shared';
-import { showErrorToast } from '@/components/shared/utils/ErrorToast';
+import toast from 'react-hot-toast';
 
 interface ChatProps {
   setShowSettings: (value: boolean) => void;
@@ -186,7 +186,7 @@ const Chat = ({
       setMessage('');
 
       if (!urls?.chat) {
-        showErrorToast('Missing API path for LLM chat');
+        toast.error('Missing API path for LLM chat');
         return;
       }
 
@@ -279,7 +279,7 @@ const Chat = ({
   const [isUploadingFile, setIsUploadingFile] = useState(false);
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!urls?.fileUpload) {
-      showErrorToast('Missing API path for file upload');
+      toast.error('Missing API path for file upload');
       return;
     }
     const files = e.target.files;
@@ -287,7 +287,7 @@ const Chat = ({
       const formData = new FormData();
       formData.append('file', files[0]);
       setIsUploadingFile(true);
-      const response = await fetch(urls.fileUpload, {
+      const response = await fetch(urls?.fileUpload, {
         method: 'POST',
         body: formData,
       });
