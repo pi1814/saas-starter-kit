@@ -1,6 +1,6 @@
 import React from 'react';
 import TeamDropdown from '../TeamDropdown';
-import { XMarkIcon } from '@heroicons/react/24/outline';
+import { X } from 'lucide-react';
 import Brand from './Brand';
 import Navigation from './Navigation';
 import { useTranslation } from 'next-i18next';
@@ -27,10 +27,7 @@ const Drawer = ({ sidebarOpen, setSidebarOpen }: DrawerProps) => {
                   onClick={() => setSidebarOpen(false)}
                 >
                   <span className="sr-only">{t('close-sidebar')}</span>
-                  <XMarkIcon
-                    className="h-6 w-6 text-white"
-                    aria-hidden="true"
-                  />
+                  <X className="h-6 w-6 text-white" aria-hidden="true" />
                 </button>
               </div>
               <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-white dark:bg-black px-6 pb-4">

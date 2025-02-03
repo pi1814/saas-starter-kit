@@ -11,10 +11,9 @@ const Navigation = () => {
 
   useEffect(() => {
     if (isReady && asPath) {
-      const activePathname = new URL(asPath, location.href).pathname;
       setActivePathname(activePathname);
     }
-  }, [asPath, isReady]);
+  }, [asPath, isReady, query]);
 
   const Navigation = () => {
     if (slug) {

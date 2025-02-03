@@ -1,4 +1,4 @@
-import { ChevronUpDownIcon } from '@heroicons/react/24/outline';
+import { ChevronsUpDown } from 'lucide-react';
 
 import { Card } from '@/components/shared';
 import useTheme from 'hooks/useTheme';
@@ -23,7 +23,7 @@ const UpdateTheme = () => {
             <div className="flex items-center gap-2">
               <selectedTheme.icon className="w-5 h-5" /> {selectedTheme.name}
             </div>
-            <ChevronUpDownIcon className="w-5 h-5" />
+            <ChevronsUpDown className="w-5 h-5" />
           </div>
           <ul
             tabIndex={0}
